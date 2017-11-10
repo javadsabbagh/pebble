@@ -1,0 +1,32 @@
+group 'pebble'
+version '0.1-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+
+//    flatDir {
+//        dirs 'lib'
+//    }
+}
+
+dependencies {
+    testCompile 'junit:junit:4.11'
+
+//    compile name: 'custom-lib'
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'pebble',
+                'Implementation-Version': '1.0',
+                'Built-JDK': System.getProperty('java.version'),
+                'Main-Class': "com.foss.pebble.Application"
+    }
+    baseName = 'pebble'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
